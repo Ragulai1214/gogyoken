@@ -1,0 +1,205 @@
+[gd_scene format=3 uid="uid://beeu2mr2swfe6"]
+
+[ext_resource type="Script" uid="uid://bghkebl72vqwr" path="res://scripts/Battle.gd" id="1"]
+[ext_resource type="Script" uid="uid://py8p4ue5nh0i" path="res://scripts/RadialGradient.gd" id="2_2rusm"]
+[ext_resource type="Texture2D" uid="uid://76gx0n80h8dh" path="res://assets/sprite/effect/brilliant.png" id="2_0448q"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2rusm"]
+atlas = ExtResource("2_0448q")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6grd4"]
+atlas = ExtResource("2_0448q")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0y4rl"]
+atlas = ExtResource("2_0448q")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ggyc1"]
+atlas = ExtResource("2_0448q")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p8l6q"]
+atlas = ExtResource("2_0448q")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2cxp4"]
+atlas = ExtResource("2_0448q")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7xoqm"]
+atlas = ExtResource("2_0448q")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_bdmed"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2rusm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6grd4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0y4rl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ggyc1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p8l6q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2cxp4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7xoqm")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Battle" type="Control" unique_id=996982944]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1461970883]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+script = ExtResource("2_2rusm")
+
+[node name="VBox" type="VBoxContainer" parent="." unique_id=1403704190]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 27.0
+offset_right = -20.0
+offset_bottom = -13.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+
+[node name="BattleArea" type="HBoxContainer" parent="VBox" unique_id=1150365897]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="PlayerSide" type="VBoxContainer" parent="VBox/BattleArea" unique_id=451893338]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="PlayerLabel" type="Label" parent="VBox/BattleArea/PlayerSide" unique_id=232713201]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "自分"
+horizontal_alignment = 1
+
+[node name="PlayerHPBar" type="ProgressBar" parent="VBox/BattleArea/PlayerSide" unique_id=1653918830]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+value = 100.0
+
+[node name="PlayerHPLabel" type="Label" parent="VBox/BattleArea/PlayerSide" unique_id=1631837481]
+layout_mode = 2
+text = "HP: 100"
+horizontal_alignment = 1
+
+[node name="PlayerPrimeLabel" type="Label" parent="VBox/BattleArea/PlayerSide" unique_id=602715275]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "プライム: なし"
+horizontal_alignment = 1
+
+[node name="CPUSide" type="VBoxContainer" parent="VBox/BattleArea" unique_id=115532342]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="CPULabel" type="Label" parent="VBox/BattleArea/CPUSide" unique_id=1170550993]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "CPU"
+horizontal_alignment = 1
+
+[node name="CPUHPBar" type="ProgressBar" parent="VBox/BattleArea/CPUSide" unique_id=434098659]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+value = 100.0
+
+[node name="CPUHPLabel" type="Label" parent="VBox/BattleArea/CPUSide" unique_id=282430596]
+layout_mode = 2
+text = "HP: 100"
+horizontal_alignment = 1
+
+[node name="CPUPrimeLabel" type="Label" parent="VBox/BattleArea/CPUSide" unique_id=2019318553]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "プライム: なし"
+horizontal_alignment = 1
+
+[node name="CPUHandLabel" type="Label" parent="VBox/BattleArea/CPUSide" unique_id=1811048067]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "CPU: ?"
+horizontal_alignment = 1
+
+[node name="ResultLabel" type="Label" parent="VBox" unique_id=69455202]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+
+[node name="HandButtons" type="HBoxContainer" parent="VBox" unique_id=1644982017]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Button" type="Button" parent="." unique_id=1069096862]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.44900003
+anchor_top = 0.776
+anchor_right = 0.55300003
+anchor_bottom = 0.82400006
+offset_left = -0.24804688
+offset_top = 0.15197754
+offset_right = -0.056030273
+offset_bottom = 0.047973633
+text = "ホーム画面に戻る"
+
+[node name="PlayerHandIcon" type="TextureRect" parent="." unique_id=538081061]
+layout_mode = 0
+offset_left = 250.0
+offset_top = 200.0
+offset_right = 350.0
+offset_bottom = 300.0
+stretch_mode = 5
+
+[node name="CPUHandIcon" type="TextureRect" parent="." unique_id=1750966706]
+layout_mode = 0
+offset_left = 800.0
+offset_top = 200.0
+offset_right = 900.0
+offset_bottom = 300.0
+stretch_mode = 5
+
+[node name="PrimeEffect" type="AnimatedSprite2D" parent="." unique_id=122610085]
+position = Vector2(82.000015, 84.000015)
+scale = Vector2(5, 5.093)
+sprite_frames = SubResource("SpriteFrames_bdmed")
+frame_progress = 0.40073568
+speed_scale = 2.0

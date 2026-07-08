@@ -1,0 +1,240 @@
+[gd_scene format=3 uid="uid://dlnkeny3pu7qs"]
+
+[ext_resource type="Script" uid="uid://bu5fi6h16odgw" path="res://scripts/Rule.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://bk1pvh4y2xytl" path="res://assets/sprite/icons/rule/soukoku-yajirusi.png" id="2_jtqu0"]
+[ext_resource type="Texture2D" uid="uid://cqsyb75y51qne" path="res://assets/sprite/icons/rule/sousei-yajirusi.png" id="3_ket1p"]
+[ext_resource type="Texture2D" uid="uid://d67cqx4si1gq" path="res://assets/sprite/icons/rule/kimoji.png" id="4_innjr"]
+[ext_resource type="Texture2D" uid="uid://dql5q1n5vv0al" path="res://assets/sprite/icons/rule/himoji.png" id="5_buby5"]
+[ext_resource type="Texture2D" uid="uid://dbi0o302lx5qk" path="res://assets/sprite/icons/rule/tutimoji.png" id="6_8fe05"]
+[ext_resource type="Texture2D" uid="uid://dux505im24y2h" path="res://assets/sprite/icons/rule/kinmoji.png" id="7_gout3"]
+[ext_resource type="Texture2D" uid="uid://b6t5ggvpn7s6m" path="res://assets/sprite/icons/rule/mizumoji.png" id="8_3swrl"]
+[ext_resource type="Texture2D" uid="uid://8ojuyb80ocgp" path="res://assets/sprite/icons/rule/sousei-yajirusi-m.png" id="9_buby5"]
+
+[node name="Rule" type="Control" unique_id=921466052]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=2107103249]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.101960786, 0.101960786, 0.24313726, 1)
+
+[node name="TitleLabel" type="Label" parent="." unique_id=636777242]
+layout_mode = 0
+offset_top = 20.0
+offset_right = 1152.0
+offset_bottom = 70.0
+theme_override_font_sizes/font_size = 36
+text = "ルール説明"
+horizontal_alignment = 1
+
+[node name="BackButton" type="Button" parent="." unique_id=860004669]
+layout_mode = 0
+offset_left = 525.0
+offset_top = 500.0
+offset_right = 625.0
+offset_bottom = 550.0
+theme_override_font_sizes/font_size = 20
+text = "戻る"
+
+[node name="Label" type="Label" parent="." unique_id=325951044]
+layout_mode = 0
+offset_left = 950.0
+offset_top = 350.0
+offset_right = 1050.0
+offset_bottom = 451.0
+text = "相克
+
+
+相生
+"
+
+[node name="red-arrow" type="TextureRect" parent="." unique_id=67233579]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.808
+anchor_top = 0.554
+anchor_right = 0.89500004
+anchor_bottom = 0.708
+offset_left = 0.18395996
+offset_top = 0.0079956055
+offset_right = -0.040039063
+offset_bottom = 0.21600342
+texture = ExtResource("2_jtqu0")
+
+[node name="blue-arrow" type="TextureRect" parent="." unique_id=1192645855]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.80600005
+anchor_top = 0.66700006
+anchor_right = 0.89300007
+anchor_bottom = 0.82100004
+offset_left = 0.48791504
+offset_top = -0.21603394
+offset_right = 0.26391602
+offset_bottom = -0.0079956055
+texture = ExtResource("3_ket1p")
+
+[node name="wood" type="TextureRect" parent="." unique_id=975817944]
+layout_mode = 0
+offset_left = 530.0
+offset_top = 100.0
+offset_right = 630.0
+offset_bottom = 200.0
+texture = ExtResource("4_innjr")
+
+[node name="fire" type="TextureRect" parent="." unique_id=380868127]
+layout_mode = 0
+offset_left = 660.0
+offset_top = 200.0
+offset_right = 760.0
+offset_bottom = 300.0
+texture = ExtResource("5_buby5")
+
+[node name="earth" type="TextureRect" parent="." unique_id=438328181]
+layout_mode = 0
+offset_left = 600.0
+offset_top = 350.0
+offset_right = 700.0
+offset_bottom = 450.0
+texture = ExtResource("6_8fe05")
+
+[node name="metal" type="TextureRect" parent="." unique_id=978818320]
+layout_mode = 0
+offset_left = 440.0
+offset_top = 350.0
+offset_right = 540.0
+offset_bottom = 450.0
+texture = ExtResource("7_gout3")
+
+[node name="water" type="TextureRect" parent="." unique_id=24113782]
+layout_mode = 0
+offset_left = 390.0
+offset_top = 200.0
+offset_right = 490.0
+offset_bottom = 300.0
+texture = ExtResource("8_3swrl")
+
+[node name="Label2" type="Label" parent="." unique_id=2009191223]
+layout_mode = 0
+offset_right = 888.0
+offset_bottom = 500.0
+text = "五行拳へようこそ！
+木・火・土・金・水の5属性から1つを選び
+CPUと同時に出し合うHP制じゃんけんです。
+【相克】勝ち負けの関係
+木→土→水→火→金→木の順で勝ちます。
+勝つと相手に20ダメージ。
+【相生】プライムの獲得
+木→火→土→金→水→木の順で「生む」関係があります。
+相生になるとダメージはありませんが
+生まれた側の属性がプライム状態になります。
+【プライム】
+プライム状態の属性で相克勝ちするとダメージ2倍（40）
+消費されるまで何ターンでも持続します。
+【その他】
+同属性：引き分け（ダメージなし）
+無関係な手同士：相打ち（お互い10ダメージ）
+【難易度】
+Easy：ランダム
+Normal：プライム優先
+Hard：あなたの手を読む
+相手のHPを0にしたら勝利！
+"
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=226163314]
+layout_mode = 0
+offset_left = 432.0
+offset_top = 227.0
+offset_right = 803.0
+offset_bottom = 307.0
+texture = ExtResource("2_jtqu0")
+
+[node name="TextureRect2" type="TextureRect" parent="." unique_id=2048107889]
+layout_mode = 0
+offset_left = 741.0
+offset_top = 264.0
+offset_right = 1116.0
+offset_bottom = 356.0
+rotation = 2.4364796
+texture = ExtResource("2_jtqu0")
+
+[node name="TextureRect3" type="TextureRect" parent="." unique_id=930331363]
+layout_mode = 0
+offset_left = 467.0
+offset_top = 420.99997
+offset_right = 842.0
+offset_bottom = 512.99994
+rotation = 5.000368
+texture = ExtResource("2_jtqu0")
+
+[node name="TextureRect4" type="TextureRect" parent="." unique_id=863906661]
+layout_mode = 0
+offset_left = 594.0
+offset_top = 142.00002
+offset_right = 969.0
+offset_bottom = 233.99998
+rotation = 1.1536627
+texture = ExtResource("2_jtqu0")
+
+[node name="TextureRect5" type="TextureRect" parent="." unique_id=547625999]
+layout_mode = 0
+offset_left = 657.00006
+offset_top = 444.00003
+offset_right = 1032.0
+offset_bottom = 536.0
+rotation = -2.5638888
+texture = ExtResource("2_jtqu0")
+
+[node name="TextureRect6" type="TextureRect" parent="." unique_id=615219701]
+layout_mode = 0
+offset_left = 606.0
+offset_top = 120.0
+offset_right = 720.0
+offset_bottom = 236.0
+texture = ExtResource("9_buby5")
+
+[node name="TextureRect7" type="TextureRect" parent="." unique_id=1371206173]
+layout_mode = 0
+offset_left = 750.0
+offset_top = 285.0
+offset_right = 864.0
+offset_bottom = 401.0
+rotation = 1.410226
+texture = ExtResource("9_buby5")
+
+[node name="TextureRect8" type="TextureRect" parent="." unique_id=97574707]
+layout_mode = 0
+offset_left = 649.99994
+offset_top = 453.0
+offset_right = 763.99994
+offset_bottom = 569.0
+rotation = 2.3404865
+texture = ExtResource("9_buby5")
+
+[node name="TextureRect9" type="TextureRect" parent="." unique_id=2067323516]
+layout_mode = 0
+offset_left = 468.00006
+offset_top = 409.0
+offset_right = 582.00006
+offset_bottom = 525.0
+rotation = 3.3667402
+texture = ExtResource("9_buby5")
+
+[node name="TextureRect10" type="TextureRect" parent="." unique_id=77779119]
+layout_mode = 0
+offset_left = 413.0
+offset_top = 204.0
+offset_right = 527.0
+offset_bottom = 320.0
+rotation = 4.9061203
+texture = ExtResource("9_buby5")
