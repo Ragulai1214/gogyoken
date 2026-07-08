@@ -24,6 +24,11 @@ CpuAI="*uid://bygl7ab2gpqhr"
 
 version_control/autoload_on_startup=true
 
+[gui]
+
+fonts/dynamic_fonts/use_oversampling=false
+theme/custom_font="uid://uapu55sseo8a"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
