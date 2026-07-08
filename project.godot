@@ -20,6 +20,10 @@ config/icon="res://icon.svg"
 GameManager="*uid://bxsm7mjl501ll"
 CpuAI="*uid://bygl7ab2gpqhr"
 
+[display]
+
+window/stretch/mode="canvas_items"
+
 [editor]
 
 version_control/autoload_on_startup=true
