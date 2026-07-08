@@ -57,6 +57,8 @@ func _ready() -> void:
 	audio_player = AudioStreamPlayer.new()
 	add_child(audio_player)
 	home_button.pressed.connect(GameManager.play_button_se)
+	var gm = get_node("/root/GameManager")
+	gm.apply_button_style(get_node("Button"))
 
 func play_prime_effect(pos: Vector2) -> void:
 	prime_effect.stop()

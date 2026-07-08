@@ -138,3 +138,21 @@ func play_button_se() -> void:
 		add_child(button_audio)
 		button_audio.stream = load("res://assets/SE/ボタン.wav")
 	button_audio.play()
+
+func apply_button_style(btn: Button) -> void:
+	var normal_style = StyleBoxFlat.new()
+	normal_style.bg_color = Color(0.15, 0.15, 0.15, 1.0)
+	normal_style.corner_radius_top_left = 6
+	normal_style.corner_radius_top_right = 6
+	normal_style.corner_radius_bottom_left = 6
+	normal_style.corner_radius_bottom_right = 6
+	btn.add_theme_stylebox_override("normal", normal_style)
+
+	var hover_style = StyleBoxFlat.new()
+	hover_style.bg_color = Color(0.0, 0.67, 1.0, 1.0)
+	hover_style.corner_radius_top_left = 6
+	hover_style.corner_radius_top_right = 6
+	hover_style.corner_radius_bottom_left = 6
+	hover_style.corner_radius_bottom_right = 6
+	btn.add_theme_color_override("font_hover_color", Color(1, 1, 1, 1))
+	btn.add_theme_stylebox_override("hover", hover_style)

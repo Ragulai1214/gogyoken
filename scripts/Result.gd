@@ -15,6 +15,10 @@ func _ready() -> void:
 	audio_player = AudioStreamPlayer.new()
 	add_child(audio_player)
 
+	var gm = get_node("/root/GameManager")
+	gm.apply_button_style(retry_button)
+	gm.apply_button_style(home_button)
+
 	if winner == "player":
 		result_label.text = "勝利！"
 		audio_player.stream = load("res://assets/SE/勝利.wav")

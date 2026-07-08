@@ -37,9 +37,15 @@ func _ready() -> void:
 	rule_button.text = "ルール説明"
 	rule_button.pressed.connect(_on_rule_pressed)
 
-	start_button.pressed.connect(GameManager.play_button_se)
+	var gm = get_node("/root/GameManager")
+	gm.apply_button_style(start_button)
 	for btn in difficulty_buttons.get_children():
-		btn.pressed.connect(GameManager.play_button_se)
+		gm.apply_button_style(btn)
+	gm.apply_button_style(get_node("Button"))
+
+	start_button.pressed.connect(gm.play_button_se)
+	for btn in difficulty_buttons.get_children():
+		btn.pressed.connect(gm.play_button_se)
 
 # =====================
 # 難易度ボタンを動的生成
