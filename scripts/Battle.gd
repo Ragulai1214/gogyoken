@@ -59,6 +59,13 @@ func _ready() -> void:
 	home_button.pressed.connect(GameManager.play_button_se)
 	var gm = get_node("/root/GameManager")
 	gm.apply_button_style(get_node("Button"))
+	# 既存のコードの後に追加
+	_reposition_icons()
+
+func _reposition_icons() -> void:
+	var viewport_size = get_viewport_rect().size
+	player_hand_icon.position = Vector2(viewport_size.x * 0.2, viewport_size.y * 0.35)
+	cpu_hand_icon.position = Vector2(viewport_size.x * 0.75, viewport_size.y * 0.35)
 
 func play_prime_effect(pos: Vector2) -> void:
 	prime_effect.stop()
