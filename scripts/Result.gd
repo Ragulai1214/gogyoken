@@ -6,6 +6,7 @@ extends Control
 @onready var home_button: Button = $VBox/Buttons/HomeButton
 @onready var chara_sprite: AnimatedSprite2D = $CharaSprite
 @onready var bg: ColorRect = $ColorRect
+@onready var comment_bubble: TextureRect = $CommentBubble
 
 var winner: String = ""
 var difficulty: String = "normal"
@@ -14,6 +15,7 @@ var audio_player: AudioStreamPlayer
 func _ready() -> void:
 	audio_player = AudioStreamPlayer.new()
 	add_child(audio_player)
+	_show_chara_comment()
 
 	var gm = get_node("/root/GameManager")
 	gm.apply_button_style(retry_button)
@@ -40,6 +42,28 @@ func _ready() -> void:
 	home_button.pressed.connect(_on_home_pressed)
 	retry_button.pressed.connect(GameManager.play_button_se)
 	home_button.pressed.connect(GameManager.play_button_se)
+
+func _show_chara_comment() -> void:
+	var win_comments = [
+		"よっ！五行説マスター！",
+		"連勝狙っちゃう？",
+		"最高の一手だったね！",
+	]
+	var lose_comments = [
+		"次勝とうな",
+		"残念無念また来年",
+		"まあ、相性もあるしな",
+	]
+
+	var comment_text = ""
+	if winner == "player":
+		comment_text = win_comments[randi() % win_comments.size()]
+	else:
+		comment_text = lose_comments[randi() % lose_comments.size()]
+
+	var label = $CommentBubble/CommentLabel
+	label.text = comment_text
+	label.add_theme_color_override("font_color", Color(0.0, 0.0, 0.0, 1.0))
 
 func _on_retry_pressed() -> void:
 	var gm = get_node("/root/GameManager")

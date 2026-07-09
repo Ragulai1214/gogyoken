@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://crx1g3qwx8ib2" path="res://scripts/Result.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://cniu6uct5pdbs" path="res://assets/sprite/icons/result/草.png" id="2_5m3t6"]
 [ext_resource type="Script" uid="uid://q8h4e721jntk" path="res://scripts/GradientBG.gd" id="2_ulngk"]
+[ext_resource type="Texture2D" uid="uid://buvpkjq1ia4hu" path="res://assets/sprite/icons/result/comment.png" id="4_4ij2v"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ulngk"]
 atlas = ExtResource("2_5m3t6")
@@ -172,13 +173,16 @@ color = Color(0, 0, 0, 1)
 script = ExtResource("2_ulngk")
 
 [node name="VBox" type="VBoxContainer" parent="." unique_id=538938395]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 40.0
 offset_top = 40.0
 offset_right = -40.0
 offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/separation = 30
 
 [node name="ResultLabel" type="Label" parent="VBox" unique_id=1534586344]
@@ -208,3 +212,29 @@ position = Vector2(577.00006, 398.99997)
 scale = Vector2(4.029, 3.811)
 sprite_frames = SubResource("SpriteFrames_dg4nu")
 speed_scale = 3.0
+
+[node name="CommentBubble" type="TextureRect" parent="." unique_id=70028516]
+clip_contents = true
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 0
+offset_left = 509.0
+offset_top = 202.0
+offset_right = 819.0
+offset_bottom = 321.5
+scale = Vector2(2, 2)
+texture = ExtResource("4_4ij2v")
+
+[node name="CommentLabel" type="Label" parent="CommentBubble" unique_id=1634738790]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.377
+anchor_top = 0.31
+anchor_right = 0.744
+anchor_bottom = 0.68600005
+offset_left = 0.13000488
+offset_top = -0.04499817
+offset_right = -0.13999939
+offset_bottom = 0.022994995
+grow_horizontal = 2
+grow_vertical = 2
+autowrap_mode = 2

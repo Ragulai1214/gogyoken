@@ -13,10 +13,14 @@ extends Control
 @onready var player_hand_icon: TextureRect = $PlayerHandIcon
 @onready var cpu_hand_icon: TextureRect = $CPUHandIcon
 @onready var prime_effect: AnimatedSprite2D = $PrimeEffect
-var hand_button_list: Array = [] 
 @onready var player_damage_effect: AnimatedSprite2D = $PlayerDamageEffect
 @onready var cpu_damage_effect: AnimatedSprite2D = $CPUDamageEffect
 @onready var difficulty_label: Label = $DifficultyLabel
+
+var hand_button_list: Array = []
+var game_manager: Node
+var audio_player: AudioStreamPlayer
+var result_cache: Dictionary = {}
 
 const ELEMENT_JP = {
 	"wood":  "木",
@@ -42,9 +46,6 @@ const ELEMENT_ICON = {
 	"water": "res://assets/sprite/icons/battle/water.png",
 }
 
-var game_manager: Node
-var audio_player: AudioStreamPlayer
-
 func _ready() -> void:
 	game_manager = get_node("/root/GameManager")
 	game_manager.turn_resolved.connect(_on_turn_resolved)
@@ -55,14 +56,13 @@ func _ready() -> void:
 	var home_button = get_node("Button")
 	home_button.text = "ホームに戻る"
 	home_button.pressed.connect(_on_home_pressed)
+	home_button.pressed.connect(GameManager.play_button_se)
+	var gm = get_node("/root/GameManager")
+	gm.apply_button_style(get_node("Button"))
 	prime_effect.animation_finished.connect(_on_prime_effect_finished)
 	prime_effect.visible = false
 	audio_player = AudioStreamPlayer.new()
 	add_child(audio_player)
-	home_button.pressed.connect(GameManager.play_button_se)
-	var gm = get_node("/root/GameManager")
-	gm.apply_button_style(get_node("Button"))
-	# 既存のコードの後に追加
 	_reposition_icons()
 	player_damage_effect.visible = false
 	cpu_damage_effect.visible = false
@@ -73,32 +73,6 @@ func _reposition_icons() -> void:
 	var viewport_size = get_viewport_rect().size
 	player_hand_icon.position = Vector2(viewport_size.x * 0.2, viewport_size.y * 0.35)
 	cpu_hand_icon.position = Vector2(viewport_size.x * 0.75, viewport_size.y * 0.35)
-
-func play_prime_effect(pos: Vector2) -> void:
-	prime_effect.stop()
-	prime_effect.position = pos
-	prime_effect.visible = true
-	prime_effect.frame = 0
-	prime_effect.play("default")
-
-func _on_prime_effect_finished() -> void:
-	prime_effect.visible = false
-
-func play_damage_effect(target: String) -> void:
-	if target == "player":
-		player_damage_effect.position = player_hand_icon.position + player_hand_icon.size / 2
-		player_damage_effect.visible = true
-		player_damage_effect.frame = 0
-		player_damage_effect.play("default")
-	else:
-		cpu_damage_effect.position = cpu_hand_icon.position + cpu_hand_icon.size / 2
-		cpu_damage_effect.visible = true
-		cpu_damage_effect.frame = 0
-		cpu_damage_effect.play("default")
-
-func play_se(filename: String) -> void:
-	audio_player.stream = load("res://assets/SE/" + filename)
-	audio_player.play()
 
 func _setup_hand_buttons() -> void:
 	for element in GameManager.ELEMENTS:
@@ -146,6 +120,7 @@ func _on_hand_selected(element: String) -> void:
 	game_manager.resolve_turn(element)
 
 func _on_turn_resolved(result: Dictionary) -> void:
+	result_cache = result
 	player_hand_icon.texture = load(ELEMENT_ICON[result.player_hand])
 	cpu_hand_icon.texture = load(ELEMENT_ICON[result.cpu_hand])
 	cpu_hand_label.text = "CPU: " + ELEMENT_JP[result.cpu_hand]
@@ -163,23 +138,18 @@ func _on_turn_resolved(result: Dictionary) -> void:
 	if result.new_cpu_primes.size() > 0:
 		var center = cpu_hand_icon.position + cpu_hand_icon.size / 2
 		play_prime_effect(center)
-	# プライム状態のボタン背景を黄色に
 	_update_button_prime_style(result.player_primes)
-	# ダメージ数字表示
 	if result.outcome == "win":
 		show_damage(result.damage, "cpu")
+		play_damage_effect("cpu")
 	elif result.outcome == "lose":
 		show_damage(result.damage, "player")
+		play_damage_effect("player")
+		shake_screen()
 	elif result.outcome == "clash":
 		show_damage(10, "cpu")
 		show_damage(10, "player")
-	
-	if result.outcome == "win":
-		play_damage_effect("cpu")
-	elif result.outcome == "lose":
-		play_damage_effect("player")
-	
-	# SE再生
+		shake_screen()
 	match result.outcome:
 		"win":
 			if result.player_combo:
@@ -195,21 +165,39 @@ func _on_turn_resolved(result: Dictionary) -> void:
 				play_se("プライム獲得.wav")
 			if result.new_cpu_primes.size() > 0:
 				play_se("CPUプライム.wav")
-	
-	if result.outcome == "win":
-		play_damage_effect("cpu")
-	elif result.outcome == "lose":
-		play_damage_effect("player")
-		shake_screen()
-	elif result.outcome == "clash":
-		shake_screen()
+
+func play_prime_effect(pos: Vector2) -> void:
+	prime_effect.stop()
+	prime_effect.position = pos
+	prime_effect.visible = true
+	prime_effect.frame = 0
+	prime_effect.play("default")
+
+func _on_prime_effect_finished() -> void:
+	prime_effect.visible = false
+
+func play_damage_effect(target: String) -> void:
+	if target == "player":
+		player_damage_effect.position = player_hand_icon.position + player_hand_icon.size / 2
+		player_damage_effect.visible = true
+		player_damage_effect.frame = 0
+		player_damage_effect.play("default")
+	else:
+		cpu_damage_effect.position = cpu_hand_icon.position + cpu_hand_icon.size / 2
+		cpu_damage_effect.visible = true
+		cpu_damage_effect.frame = 0
+		cpu_damage_effect.play("default")
+
+func play_se(filename: String) -> void:
+	audio_player.stream = load("res://assets/SE/" + filename)
+	audio_player.play()
 
 func shake_screen() -> void:
 	var original_pos = get_viewport().canvas_transform.origin
 	var tween = create_tween()
 	tween.tween_method(func(offset: float):
 		get_viewport().canvas_transform.origin = original_pos + Vector2(randf_range(-offset, offset), randf_range(-offset, offset)),
-		8.0, 0.5, 0.6)
+		8.0, 0.0, 0.3)
 
 func _update_button_prime_style(player_primes: Array) -> void:
 	for i in GameManager.ELEMENTS.size():
@@ -224,9 +212,30 @@ func _update_button_prime_style(player_primes: Array) -> void:
 			style.corner_radius_bottom_right = 6
 			btn.add_theme_stylebox_override("normal", style)
 			btn.add_theme_stylebox_override("hover", style)
+			if element in result_cache.get("new_player_primes", []):
+				_bounce_button(btn)
 		else:
 			btn.remove_theme_stylebox_override("normal")
 			btn.remove_theme_stylebox_override("hover")
+
+func _bounce_button(btn: Button) -> void:
+	var original_scale = btn.scale
+	var tween = create_tween()
+	tween.tween_property(btn, "scale", Vector2(1.3, 1.3), 0.1)
+	tween.tween_property(btn, "scale", Vector2(0.9, 0.9), 0.1)
+	tween.tween_property(btn, "scale", Vector2(1.1, 1.1), 0.08)
+	tween.tween_property(btn, "scale", original_scale, 0.08)
+
+func _update_hp_bar_color(bar: ProgressBar, new_hp: int) -> void:
+	var ratio = float(new_hp) / float(game_manager.max_hp)
+	var stylebox = StyleBoxFlat.new()
+	if ratio <= 0.2:
+		stylebox.bg_color = Color(1.0, 0.0, 0.0, 1.0)
+	elif ratio <= 0.4:
+		stylebox.bg_color = Color(1.0, 0.8, 0.0, 1.0)
+	else:
+		stylebox.bg_color = Color(0.0, 0.8, 0.0, 1.0)
+	bar.add_theme_stylebox_override("fill", stylebox)
 
 func _on_hp_changed(target: String, new_hp: int) -> void:
 	if target == "player":
@@ -240,19 +249,9 @@ func _on_hp_changed(target: String, new_hp: int) -> void:
 		cpu_hp_label.text = "HP: %d" % new_hp
 		_update_hp_bar_color(cpu_hp_bar, new_hp)
 
-func _update_hp_bar_color(bar: ProgressBar, new_hp: int) -> void:
-	var ratio = float(new_hp) / float(game_manager.max_hp)
-	var stylebox = StyleBoxFlat.new()
-	if ratio <= 0.2:
-		stylebox.bg_color = Color(1.0, 0.0, 0.0, 1.0)  # 赤
-	elif ratio <= 0.4:
-		stylebox.bg_color = Color(1.0, 0.8, 0.0, 1.0)  # 黄
-	else:
-		stylebox.bg_color = Color(0.0, 0.8, 0.0, 1.0)  # 緑
-	bar.add_theme_stylebox_override("fill", stylebox)
-
 func _on_battle_ended(winner: String) -> void:
 	_set_buttons_disabled(true)
+	await _slow_shake()
 	var result_scene = load("res://scenes/Result.tscn").instantiate()
 	result_scene.winner = winner
 	result_scene.difficulty = game_manager.difficulty
@@ -260,6 +259,15 @@ func _on_battle_ended(winner: String) -> void:
 	await get_tree().process_frame
 	get_tree().current_scene = result_scene
 	queue_free()
+
+func _slow_shake() -> void:
+	var original_pos = get_viewport().canvas_transform.origin
+	var tween = create_tween()
+	tween.tween_method(func(offset: float):
+		get_viewport().canvas_transform.origin = original_pos + Vector2(randf_range(-offset, offset), randf_range(-offset, offset)),
+		12.0, 0.0, 1.5)
+	await tween.finished
+	get_viewport().canvas_transform.origin = original_pos
 
 func _set_buttons_disabled(disabled: bool) -> void:
 	for btn in hand_buttons.get_children():
@@ -269,11 +277,9 @@ func _on_home_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/Main.tscn")
 
 func show_damage(damage: int, target: String) -> void:
-	# 数字画像を組み合わせてHBoxContainerで表示
 	var container = HBoxContainer.new()
 	container.add_theme_constant_override("separation", 1)
 	add_child(container)
-	
 	var damage_str = str(damage)
 	for ch in damage_str:
 		var tex_rect = TextureRect.new()
@@ -281,25 +287,19 @@ func show_damage(damage: int, target: String) -> void:
 		tex_rect.custom_minimum_size = Vector2(64, 64)
 		tex_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		container.add_child(tex_rect)
-	
-	# 表示位置
 	if target == "player":
 		container.position = player_hand_icon.position + Vector2(player_hand_icon.size.x / 2 - 16, -30)
 	else:
 		container.position = cpu_hand_icon.position + Vector2(cpu_hand_icon.size.x / 2 - 16, -30)
-	
-	# Tweenアニメーション：上に浮いて揺れて消える
 	var tween = create_tween()
 	tween.set_parallel(true)
 	tween.tween_property(container, "position:y", container.position.y - 60, 0.8)
 	tween.tween_property(container, "modulate:a", 0.0, 0.8)
-	# 横揺れ
 	var shake = create_tween()
 	shake.tween_property(container, "position:x", container.position.x + 8, 0.1)
 	shake.tween_property(container, "position:x", container.position.x - 8, 0.1)
 	shake.tween_property(container, "position:x", container.position.x + 6, 0.1)
 	shake.tween_property(container, "position:x", container.position.x - 6, 0.1)
 	shake.tween_property(container, "position:x", container.position.x, 0.1)
-	
 	await tween.finished
 	container.queue_free()
