@@ -14,6 +14,9 @@ extends Control
 @onready var cpu_hand_icon: TextureRect = $CPUHandIcon
 @onready var prime_effect: AnimatedSprite2D = $PrimeEffect
 var hand_button_list: Array = [] 
+@onready var player_damage_effect: AnimatedSprite2D = $PlayerDamageEffect
+@onready var cpu_damage_effect: AnimatedSprite2D = $CPUDamageEffect
+@onready var difficulty_label: Label = $DifficultyLabel
 
 const ELEMENT_JP = {
 	"wood":  "木",
@@ -61,6 +64,10 @@ func _ready() -> void:
 	gm.apply_button_style(get_node("Button"))
 	# 既存のコードの後に追加
 	_reposition_icons()
+	player_damage_effect.visible = false
+	cpu_damage_effect.visible = false
+	player_damage_effect.animation_finished.connect(func(): player_damage_effect.visible = false)
+	cpu_damage_effect.animation_finished.connect(func(): cpu_damage_effect.visible = false)
 
 func _reposition_icons() -> void:
 	var viewport_size = get_viewport_rect().size
@@ -76,6 +83,18 @@ func play_prime_effect(pos: Vector2) -> void:
 
 func _on_prime_effect_finished() -> void:
 	prime_effect.visible = false
+
+func play_damage_effect(target: String) -> void:
+	if target == "player":
+		player_damage_effect.position = player_hand_icon.position + player_hand_icon.size / 2
+		player_damage_effect.visible = true
+		player_damage_effect.frame = 0
+		player_damage_effect.play("default")
+	else:
+		cpu_damage_effect.position = cpu_hand_icon.position + cpu_hand_icon.size / 2
+		cpu_damage_effect.visible = true
+		cpu_damage_effect.frame = 0
+		cpu_damage_effect.play("default")
 
 func play_se(filename: String) -> void:
 	audio_player.stream = load("res://assets/SE/" + filename)
@@ -103,6 +122,12 @@ func _refresh_ui() -> void:
 	_update_prime_labels(game_manager.player_primes, game_manager.cpu_primes)
 	result_label.text = ""
 	cpu_hand_label.text = "CPU: ?"
+	_update_hp_bar_color(player_hp_bar, game_manager.player_hp)
+	_update_hp_bar_color(cpu_hp_bar, game_manager.cpu_hp)
+	var diff_jp = {"easy": "Easy", "normal": "Normal", "hard": "Hard"}
+	var diff_color = {"easy": Color(0.0, 0.8, 0.0, 1.0), "normal": Color(1.0, 1.0, 1.0, 1.0), "hard": Color(1.0, 0.0, 0.0, 1.0)}
+	difficulty_label.text = "難易度: " + diff_jp[game_manager.difficulty]
+	difficulty_label.add_theme_color_override("font_color", diff_color[game_manager.difficulty])
 
 func _update_prime_labels(player_primes: Array, cpu_primes: Array) -> void:
 	if player_primes.size() == 0:
@@ -149,6 +174,11 @@ func _on_turn_resolved(result: Dictionary) -> void:
 		show_damage(10, "cpu")
 		show_damage(10, "player")
 	
+	if result.outcome == "win":
+		play_damage_effect("cpu")
+	elif result.outcome == "lose":
+		play_damage_effect("player")
+	
 	# SE再生
 	match result.outcome:
 		"win":
@@ -165,6 +195,21 @@ func _on_turn_resolved(result: Dictionary) -> void:
 				play_se("プライム獲得.wav")
 			if result.new_cpu_primes.size() > 0:
 				play_se("CPUプライム.wav")
+	
+	if result.outcome == "win":
+		play_damage_effect("cpu")
+	elif result.outcome == "lose":
+		play_damage_effect("player")
+		shake_screen()
+	elif result.outcome == "clash":
+		shake_screen()
+
+func shake_screen() -> void:
+	var original_pos = get_viewport().canvas_transform.origin
+	var tween = create_tween()
+	tween.tween_method(func(offset: float):
+		get_viewport().canvas_transform.origin = original_pos + Vector2(randf_range(-offset, offset), randf_range(-offset, offset)),
+		8.0, 0.5, 0.6)
 
 func _update_button_prime_style(player_primes: Array) -> void:
 	for i in GameManager.ELEMENTS.size():
@@ -188,10 +233,23 @@ func _on_hp_changed(target: String, new_hp: int) -> void:
 		var tween = create_tween()
 		tween.tween_property(player_hp_bar, "value", new_hp, 0.3)
 		player_hp_label.text = "HP: %d" % new_hp
+		_update_hp_bar_color(player_hp_bar, new_hp)
 	else:
 		var tween = create_tween()
 		tween.tween_property(cpu_hp_bar, "value", new_hp, 0.3)
 		cpu_hp_label.text = "HP: %d" % new_hp
+		_update_hp_bar_color(cpu_hp_bar, new_hp)
+
+func _update_hp_bar_color(bar: ProgressBar, new_hp: int) -> void:
+	var ratio = float(new_hp) / float(game_manager.max_hp)
+	var stylebox = StyleBoxFlat.new()
+	if ratio <= 0.2:
+		stylebox.bg_color = Color(1.0, 0.0, 0.0, 1.0)  # 赤
+	elif ratio <= 0.4:
+		stylebox.bg_color = Color(1.0, 0.8, 0.0, 1.0)  # 黄
+	else:
+		stylebox.bg_color = Color(0.0, 0.8, 0.0, 1.0)  # 緑
+	bar.add_theme_stylebox_override("fill", stylebox)
 
 func _on_battle_ended(winner: String) -> void:
 	_set_buttons_disabled(true)

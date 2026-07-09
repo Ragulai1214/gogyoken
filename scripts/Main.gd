@@ -27,6 +27,10 @@ func _ready() -> void:
 	hp_slider.value = 100
 	hp_label.text = "HP: 100"
 
+	var slider_style = StyleBoxFlat.new()
+	slider_style.bg_color = Color(0.0, 0.8, 0.0, 1.0)
+	hp_slider.add_theme_stylebox_override("grabber_area", slider_style)
+
 	hp_slider.value_changed.connect(_on_hp_changed)
 	start_button.pressed.connect(_on_start_pressed)
 

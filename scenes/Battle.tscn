@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://bghkebl72vqwr" path="res://scripts/Battle.gd" id="1"]
 [ext_resource type="Script" uid="uid://py8p4ue5nh0i" path="res://scripts/RadialGradient.gd" id="2_2rusm"]
 [ext_resource type="Texture2D" uid="uid://76gx0n80h8dh" path="res://assets/sprite/effect/brilliant.png" id="2_0448q"]
+[ext_resource type="Texture2D" uid="uid://bwbtw3arnoh55" path="res://assets/sprite/effect/damageplayer.png" id="4_0y4rl"]
+[ext_resource type="Texture2D" uid="uid://dy1g1wassyny1" path="res://assets/sprite/effect/damagecpu.png" id="4_ggyc1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2rusm"]
 atlas = ExtResource("2_0448q")
@@ -55,6 +57,120 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_7xoqm")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ob7dw"]
+atlas = ExtResource("4_ggyc1")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8umis"]
+atlas = ExtResource("4_ggyc1")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ora22"]
+atlas = ExtResource("4_ggyc1")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dpg7a"]
+atlas = ExtResource("4_ggyc1")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8h0x3"]
+atlas = ExtResource("4_ggyc1")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l0ske"]
+atlas = ExtResource("4_ggyc1")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7hbu7"]
+atlas = ExtResource("4_ggyc1")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2rusm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ob7dw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8umis")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ora22")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dpg7a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8h0x3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l0ske")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7hbu7")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pf0ra"]
+atlas = ExtResource("4_0y4rl")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_00njq"]
+atlas = ExtResource("4_0y4rl")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b2l78"]
+atlas = ExtResource("4_0y4rl")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m7t4b"]
+atlas = ExtResource("4_0y4rl")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xdbdk"]
+atlas = ExtResource("4_0y4rl")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vuojo"]
+atlas = ExtResource("4_0y4rl")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3b6xh"]
+atlas = ExtResource("4_0y4rl")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_lcn8m"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pf0ra")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_00njq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b2l78")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m7t4b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xdbdk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vuojo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3b6xh")
 }],
 "loop": false,
 "name": &"default",
@@ -203,3 +319,26 @@ scale = Vector2(5, 5.093)
 sprite_frames = SubResource("SpriteFrames_bdmed")
 frame_progress = 0.40073568
 speed_scale = 2.0
+
+[node name="PlayerDamageEffect" type="AnimatedSprite2D" parent="." unique_id=939795519]
+position = Vector2(235, 292)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_2rusm")
+frame = 6
+frame_progress = 1.0
+speed_scale = 3.0
+
+[node name="CPUDamageEffect" type="AnimatedSprite2D" parent="." unique_id=1790019816]
+position = Vector2(74.08, 256)
+scale = Vector2(4.0575, 4)
+sprite_frames = SubResource("SpriteFrames_lcn8m")
+frame = 6
+frame_progress = 1.0
+speed_scale = 3.0
+
+[node name="DifficultyLabel" type="Label" parent="." unique_id=804426593]
+layout_mode = 0
+offset_left = 950.0
+offset_top = 27.0
+offset_right = 1131.0
+offset_bottom = 62.0
