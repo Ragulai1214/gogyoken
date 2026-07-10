@@ -338,7 +338,7 @@ speed_scale = 3.0
 
 [node name="DifficultyLabel" type="Label" parent="." unique_id=804426593]
 layout_mode = 0
-offset_left = 950.0
+offset_left = 897.0
 offset_top = 27.0
-offset_right = 1131.0
+offset_right = 1078.0
 offset_bottom = 62.0

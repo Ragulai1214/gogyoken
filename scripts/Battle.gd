@@ -102,7 +102,7 @@ func _refresh_ui() -> void:
 	var diff_color = {"easy": Color(0.0, 0.8, 0.0, 1.0), "normal": Color(1.0, 1.0, 1.0, 1.0), "hard": Color(1.0, 0.0, 0.0, 1.0)}
 	difficulty_label.text = "難易度: " + diff_jp[game_manager.difficulty]
 	difficulty_label.add_theme_color_override("font_color", diff_color[game_manager.difficulty])
-
+	difficulty_label.add_theme_font_size_override("font_size", 24)  # 好きな数値に変更
 func _update_prime_labels(player_primes: Array, cpu_primes: Array) -> void:
 	if player_primes.size() == 0:
 		player_prime_label.text = "プライム: なし"
@@ -296,10 +296,10 @@ func show_damage(damage: int, target: String) -> void:
 	tween.tween_property(container, "position:y", container.position.y - 60, 0.8)
 	tween.tween_property(container, "modulate:a", 0.0, 0.8)
 	var shake = create_tween()
-	shake.tween_property(container, "position:x", container.position.x + 8, 0.1)
-	shake.tween_property(container, "position:x", container.position.x - 8, 0.1)
-	shake.tween_property(container, "position:x", container.position.x + 6, 0.1)
-	shake.tween_property(container, "position:x", container.position.x - 6, 0.1)
+	shake.tween_property(container, "position:x", container.position.x + 25, 0.1)
+	shake.tween_property(container, "position:x", container.position.x - 25, 0.1)
+	shake.tween_property(container, "position:x", container.position.x + 20, 0.1)
+	shake.tween_property(container, "position:x", container.position.x - 20, 0.1)
 	shake.tween_property(container, "position:x", container.position.x, 0.1)
 	await tween.finished
 	container.queue_free()
