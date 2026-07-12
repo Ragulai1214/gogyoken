@@ -45,7 +45,8 @@ func _ready() -> void:
 
 func _show_chara_comment() -> void:
 	var win_comments = [
-		"よっ！五行説マスター！",
+		"よっ！
+		五行説マスター！",
 		"連勝狙っちゃう？",
 		"最高の一手だったね！",
 	]
