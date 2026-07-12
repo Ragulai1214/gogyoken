@@ -52,7 +52,7 @@ func _show_chara_comment() -> void:
 	]
 	var lose_comments = [
 		"次勝とうな",
-		"残念無念また来年",
+		"残念無念",
 		"まあ、相性もあるしな",
 	]
 
